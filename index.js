@@ -81,7 +81,7 @@ async function main(){
             }
 
             // Wait for a certain period before polling again
-            await new Promise(resolve => setTimeout(resolve, 60000)); // 600000 ms = 10 minutes
+            await new Promise(resolve => setTimeout(resolve, 300000)); // 300000 ms = 5 minutes
         } catch (error) {
             console.log('Error during polling: ', error);
         }

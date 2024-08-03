@@ -10,7 +10,8 @@ This project has the purpose to automatically post a Tweet whenever a certain ra
 Currently the bot can : 
 
 - Tweet whenever a Rare, Epic or Legendary Neftie is sold
-- Tweet the name of the Neftie
+- Tweet the name of the Neftie with a picture
+- Check every 5 minutes
 
 
 
