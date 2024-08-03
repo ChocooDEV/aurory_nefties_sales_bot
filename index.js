@@ -98,7 +98,7 @@ async function main(){
                     // Check the rarity of the item
                     if (itemDetails.generated_attributes.rarity === 'Rare' || itemDetails.generated_attributes.rarity === 'Epic' || itemDetails.generated_attributes.rarity === 'Legendary' ) {
                         // Tweet if the item is rare
-                        const text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name}has been sold! 🚨\n\nStart playing Aurory right now at https://www.app.aurory.io`;
+                        const text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold! 🚨\n\nStart playing Aurory right now at https://www.app.aurory.io`;
                         const image = itemDetails.image_mini;
                         await mediaTweet(text, image);
                     }
