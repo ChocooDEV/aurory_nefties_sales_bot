@@ -38,4 +38,3 @@ Bearer_Token=""
  - [Aurory](https://aurory.io/)
  - [Gummer](https://twitter.com/grabug3)
  - [The 76 Devs](https://discord.gg/jqJMNpZVTN)
-
