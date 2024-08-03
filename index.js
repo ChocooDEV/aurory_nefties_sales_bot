@@ -37,6 +37,9 @@ const mediaTweet = async (text, image) => {
 
 
 async function main(){
+    // Store processed items. Basically it's the 10 latest sales returned by the 1st endpoint
+    const processedItemIds = new Set();
+
     while(true){
         try {
             // Fetch recent sales
@@ -45,9 +48,23 @@ async function main(){
 
             // Iterate through each sale
             for (const sale of salesData) {
+                const itemId = sale.item_id;
 
                 if(sale.type === 'LISTING_SOLD_COMPLETELY'){
-                    const itemId = sale.item_id;
+                    // Skip this item if it has already been processed
+                    if (processedItemIds.has(itemId)) {
+                        continue;
+                    }
+
+                    // If the set already has 10 items, remove the first one (FIFO)
+                    if (processedItemIds.size >= 10) {
+                        // Convert set to array to get the first element
+                        const firstItemId = processedItemIds.values().next().value;
+                        processedItemIds.delete(firstItemId);
+                    }
+
+                    // Mark as "treated" and add to set
+                    processedItemIds.add(itemId);
 
                     // Fetch item details using the item_id
                     const itemResponse = await axios.get(`https://items-public-api.live.aurory.io/v1/items/${itemId}`);
@@ -58,13 +75,13 @@ async function main(){
                         // Tweet if the item is rare
                         const text = `A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold! `;
                         const image = itemDetails.image_mini;
-                        //await mediaTweet(text, image);
+                        await mediaTweet(text, image);
                     }
                 }
             }
 
             // Wait for a certain period before polling again
-            await new Promise(resolve => setTimeout(resolve, 300000)); // 600000 ms = 10 minutes
+            await new Promise(resolve => setTimeout(resolve, 60000)); // 600000 ms = 10 minutes
         } catch (error) {
             console.log('Error during polling: ', error);
         }
