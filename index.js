@@ -1,7 +1,16 @@
 // Import
 const { TwitterApi } = require("twitter-api-v2");
 const axios = require("axios");
+const sharp = require('sharp');
 
+// Express in order to host the app on a platform like Vercel, Heroku...
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+  })
 // Load env var
 require('dotenv').config();
 
@@ -17,12 +26,25 @@ const client = new TwitterApi({
 // Read and write controls
 const rwClient = client.readWrite;
 
+// Function to resize the image using sharp
+const resizeImage = async (buffer) => {
+    const resizedBuffer = await sharp(buffer)
+        .resize({ width: 1024, height: 1024, fit: sharp.fit.inside, withoutEnlargement: true })
+        .toBuffer();
+    return resizedBuffer;
+};
+
 // Tweet function which post tweet with media and text
-const mediaTweet = async (text, image) => {
+const mediaTweet = async (text, imageUrl) => {
     try {
+        // Download the image from the URL into a buffer
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        let buffer = Buffer.from(response.data, 'binary');
+        buffer = await resizeImage(buffer)
 
         // Create mediaID 
-        const mediaId = await client.v1.uploadMedia(image);
+        const mediaId = await client.v1.uploadMedia(buffer, { mimeType: 'image/png' });
+        console.log("media ["+mediaId+"] has been uploaded")
 
         // Use tweet() method and pass object with text and image
         await rwClient.v2.tweet({
@@ -31,7 +53,10 @@ const mediaTweet = async (text, image) => {
         });
         console.log("Tweet success");
     } catch (error) {
-        console.log(error);
+        console.error('Error in mediaTweet:', error);
+        if (error.data) {
+            console.error('Error data:', error.data);
+        }
     }
 };
 
