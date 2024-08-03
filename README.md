@@ -3,7 +3,7 @@
 
 This project has the purpose to automatically post a Tweet whenever a certain rarity Neftie is sold on Aurory marketplace.
 
-![Tweet](Docs\tweet.png?raw=true "Tweet made by the bot")
+![Tweet](Docs/tweet.png?raw=true "Tweet made by the bot")
 
 ## Features
 
