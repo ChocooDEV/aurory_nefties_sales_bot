@@ -101,8 +101,7 @@ async function main(){
                         const price = sale.unit_price / 1e9;
                         const text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold for ${price} $AURY! 🚨\n\nStart playing Aurory right now at https://www.app.aurory.io`;
                         const image = itemDetails.image_mini;
-                        console.log(text)
-                        //await mediaTweet(text, image);
+                        await mediaTweet(text, image);
                     }
                 }
             }
