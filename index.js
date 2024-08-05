@@ -98,8 +98,13 @@ async function main(){
                     // Check the rarity of the item
                     if (itemDetails.generated_attributes.rarity === 'Rare' || itemDetails.generated_attributes.rarity === 'Epic' || itemDetails.generated_attributes.rarity === 'Legendary' ) {
                         // Tweet if the item is rare
+                        // I'd consider to avoid displaying the price if it's under 50 $AURY because some players transfer assets using bids
+                        // which isn't very sexy to see the prices in those cases
                         const price = sale.unit_price / 1e9;
-                        const text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold for ${price} $AURY! 🚨\n\nStart playing Aurory right now at https://www.app.aurory.io`;
+                        let text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold! 🚨\n\nStart playing Aurory right now at https://www.app.aurory.io`;
+                        if(price >= 50){
+                            text = `🚨 A ${itemDetails.generated_attributes.rarity} ${itemDetails.name} has been sold! 🚨\n\nOne lucky player snagged it for ${price} $AURY💰 \n\nStart playing Aurory right now at https://www.app.aurory.io`;
+                        }
                         const image = itemDetails.image_mini;
                         await mediaTweet(text, image);
                     }
