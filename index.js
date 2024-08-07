@@ -95,9 +95,11 @@ async function main(){
                     const itemResponse = await axios.get(`https://items-public-api.live.aurory.io/v1/items/${itemId}`);
                     const itemDetails = itemResponse.data;
     
+                    // Get rarity
+                    const rarity = itemDetails.attributes.Rarity;
+
                     // Check the rarity of the item
-                    if (itemDetails.generated_attributes.rarity === 'Rare' || itemDetails.generated_attributes.rarity === 'Epic' || itemDetails.generated_attributes.rarity === 'Legendary' ) {
-                        const rarity = itemDetails.generated_attributes.rarity;
+                    if (rarity === 'Common' || rarity === 'Rare' || rarity === 'Epic' || rarity === 'Legendary' ) {
                         const price = sale.unit_price / 1e9;
                         let text;
 
